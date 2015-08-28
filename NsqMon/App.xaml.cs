@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Threading;
 using NsqMon.Common;
 using NsqMon.Common.ApplicationServices;
@@ -18,8 +12,7 @@ namespace NsqMon
     {
         public App()
         {
-            // Note: Known bug with App.xaml having no StartupUri and the theme speicified in XAML's Application.Resources
-            Resources = (ResourceDictionary)LoadComponent(new Uri("/Themes/Default/Theme.xaml", UriKind.RelativeOrAbsolute));
+            //Resources = (ResourceDictionary)LoadComponent(new Uri("/Themes/Default/Theme.xaml", UriKind.RelativeOrAbsolute));
 
             DispatcherUnhandledException += App_DispatcherUnhandledException;
         }

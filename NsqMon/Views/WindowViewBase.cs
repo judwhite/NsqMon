@@ -50,7 +50,7 @@ namespace NsqMon.Views
                 HandleEscape = true;
                 ShowInTaskbar = false;
                 WindowStartupLocation = WindowStartupLocation.CenterOwner;
-                FontFamily = new FontFamily("Verdana");
+                FontFamily = new FontFamily("Segoe UI");
                 FontSize = 11.0d;
                 Background = (Brush)Application.Current.Resources["WindowBackground"];
 
