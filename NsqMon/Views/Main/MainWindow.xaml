@@ -16,6 +16,8 @@
 
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
@@ -33,20 +35,59 @@
             <ComboBox
                 Grid.Row="0"
                 Grid.Column="1" 
-                ItemsSource="{Binding Clusters, UpdateSourceTrigger=PropertyChanged}" 
+                ItemsSource="{Binding Clusters, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
                 DisplayMemberPath="DisplayName" 
-                SelectedItem="{Binding SelectedCluster}"
+                SelectedItem="{Binding SelectedCluster, Mode=TwoWay}"
             />
 
             <TextBlock Grid.Row="1" Grid.Column="0" Text="Environment" />
             <ComboBox
                 Grid.Row="1"
                 Grid.Column="1" 
-                ItemsSource="{Binding Environments, UpdateSourceTrigger=PropertyChanged}" 
+                ItemsSource="{Binding Environments, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
                 DisplayMemberPath="DisplayName" 
-                SelectedItem="{Binding SelectedEnvironment}"
+                SelectedItem="{Binding SelectedEnvironment, Mode=TwoWay}"
             />
+        </Grid>
 
+        <Grid Grid.Row="2" Margin="8,0,8,8">
+            <DataGrid ItemsSource="{Binding NsqLookupds, Mode=OneWay}" Style="{StaticResource DataGridStyle}">
+                <DataGrid.Columns>
+                    <DataGridTemplateColumn Header="Url">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Path=Uri, Mode=OneWay}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Header="Alive">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <CheckBox 
+                                    Style="{StaticResource DiscreteCheckBoxStyle}" 
+                                    IsChecked="{Binding IsAlive, Mode=OneWay}"
+                                    IsEnabled="False"
+                                    HorizontalAlignment="Center"
+                                />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
+
+        <Grid Grid.Row="3" Margin="8,0,8,8">
+            <DataGrid ItemsSource="{Binding Topics, Mode=OneWay}" Style="{StaticResource DataGridStyle}">
+                <DataGrid.Columns>
+                    <DataGridTemplateColumn Header="Topic">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Path=Topic, Mode=OneWay}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
         </Grid>
 
         <common:ErrorContainer x:Name="ErrorItems" Grid.Row="0" />

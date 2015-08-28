@@ -5,13 +5,15 @@
 
     <Style x:Key="DataGridStyle" TargetType="DataGrid">
         <Setter Property="AutoGenerateColumns" Value="False" />
+        <Setter Property="AlternatingRowBackground" Value="AliceBlue" />
         <Setter Property="GridLinesVisibility" Value="None" />
         <Setter Property="SelectionUnit" Value="FullRow" />
-        <Setter Property="Background" Value="White" />
-        <Setter Property="SelectionMode" Value="Extended" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="SelectionMode" Value="Single" />
         <Setter Property="RowHeight" Value="20" />
         <Setter Property="CanUserResizeRows" Value="False" />
         <Setter Property="CanUserAddRows" Value="False" />
+        <Setter Property="CanUserDeleteRows" Value="False" />
         <Setter Property="HeadersVisibility" Value="Column" />
         <Setter Property="RowStyle" Value="{DynamicResource DataGridRowStyle}" />
         <Setter Property="CellStyle" Value="{DynamicResource NoBorderMarginedCell}" />
