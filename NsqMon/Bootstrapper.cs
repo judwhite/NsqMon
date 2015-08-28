@@ -3,6 +3,7 @@ using NsqMon.Common;
 using NsqMon.Common.ApplicationServices;
 using NsqMon.Common.Dispatcher;
 using NsqMon.Common.Events.Ux;
+using NsqMon.Views.Main;
 
 namespace NsqMon
 {

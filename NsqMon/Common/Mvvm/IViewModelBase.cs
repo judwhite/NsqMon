@@ -12,9 +12,6 @@ namespace NsqMon.Common.Mvvm
     /// </summary>
     public interface IViewModelBase : INotifyPropertyChanged
     {
-        /// <summary>Occurs when a property value changes.</summary>
-        event EnhancedPropertyChangedEventHandler EnhancedPropertyChanged;
-
         /// <summary>Occurs when MessageBox /> has been called.</summary>
         event EventHandler<DataEventArgs<MessageBoxEvent>> ShowMessageBox;
 

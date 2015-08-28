@@ -24,9 +24,6 @@ namespace NsqMon.Common.Mvvm
         protected static readonly IDialogService _dialogService;
 
         /// <summary>Occurs when a property value changes.</summary>
-        public event EnhancedPropertyChangedEventHandler EnhancedPropertyChanged;
-
-        /// <summary>Occurs when a property value changes.</summary>
         public event PropertyChangedEventHandler PropertyChanged;
 
         /// <summary>Occurs when MessageBox has been called.</summary>
@@ -39,6 +36,10 @@ namespace NsqMon.Common.Mvvm
         public event EventHandler<DataEventArgs<ShowOpenFileDialogEvent>> ShowOpenFile;
 
         private readonly Dictionary<string, object> _propertyValues = new Dictionary<string, object>();
+
+        private readonly Dictionary<string, List<object>> _onPropertyChangedEventHandlers
+                                                                    = new Dictionary<string, List<object>>();
+        private readonly object _onPropertyChangedEventHandlersLocker = new object();
 
         /// <summary>The event aggregator.</summary>
         protected readonly IEventAggregator _eventAggregator;
@@ -71,8 +72,8 @@ namespace NsqMon.Common.Mvvm
         /// <value>The error container.</value>
         public IErrorContainer ErrorContainer
         {
-            get { return Get<IErrorContainer>("ErrorContainer"); }
-            set { Set("ErrorContainer", value); }
+            get { return Get<IErrorContainer>(nameof(ErrorContainer)); }
+            set { Set(nameof(ErrorContainer), value); }
         }
 
         /// <summary>Shows the exception.</summary>
@@ -86,14 +87,25 @@ namespace NsqMon.Common.Mvvm
                 IoC.Resolve<IDialogService>().ShowError(exception, errorContainer);
         }
 
-        /// <summary>Raises the <see cref="ViewModelBase.PropertyChanged"/> and <see cref="EnhancedPropertyChanged" /> events.</summary>
+        /// <summary>Raises the <see cref="PropertyChanged"/> event.</summary>
         /// <param name="propertyName">Name of the property.</param>
-        /// <param name="oldValue">The old value.</param>
-        /// <param name="newValue">The new value.</param>
-        protected virtual void RaisePropertyChanged(string propertyName, object oldValue, object newValue)
+        protected virtual void RaisePropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-            EnhancedPropertyChanged?.Invoke(this, new EnhancedPropertyChangedEventArgs(propertyName, oldValue, newValue));
+        }
+
+        protected void AddPropertyChangedHandler<T>(string propertyName, PropertyChangedEventHandler<T> handler)
+        {
+            lock (_onPropertyChangedEventHandlersLocker)
+            {
+                List<object> handlers;
+                if (!_onPropertyChangedEventHandlers.TryGetValue(propertyName, out handlers))
+                {
+                    handlers = new List<object>();
+                    _onPropertyChangedEventHandlers.Add(propertyName, handlers);
+                }
+                handlers.Add(handler);
+            }
         }
 
         /// <summary>Gets the specified property value.</summary>
@@ -147,7 +159,21 @@ namespace NsqMon.Common.Mvvm
                 else
                     _propertyValues.Add(propertyName, value);
 
-                RaisePropertyChanged(propertyName, oldValue, value);
+                RaisePropertyChanged(propertyName);
+
+                List<object> handlers;
+                lock (_onPropertyChangedEventHandlersLocker)
+                {
+                    _onPropertyChangedEventHandlers.TryGetValue(propertyName, out handlers);
+                }
+                if (handlers != null)
+                {
+                    foreach (var objHandler in handlers)
+                    {
+                        var handler = (PropertyChangedEventHandler<T>)objHandler;
+                        handler(this, new PropertyChangedEventArgs<T>(oldValue, value));
+                    }
+                }
             }
         }
 
@@ -187,8 +213,14 @@ namespace NsqMon.Common.Mvvm
             _dispatcher.BeginInvoke(action);
         }
 
-        /// <summary>Determines whether the calling thread is the thread associated with this <see cref="System.Windows.Threading.Dispatcher" />.</summary>
-        /// <returns><c>true</c> if the calling thread is the thread associated with this <see cref="System.Windows.Threading.Dispatcher" />; otherwise, <c>false</c>.</returns>
+        /// <summary>
+        /// Determines whether the calling thread is the thread associated with this
+        /// <see cref="System.Windows.Threading.Dispatcher" />.
+        /// </summary>
+        /// <returns>
+        /// <c>true</c> if the calling thread is the thread associated with this
+        /// <see cref="System.Windows.Threading.Dispatcher" />; otherwise, <c>false</c>.
+        /// </returns>
         protected bool CheckAccess()
         {
             return _dispatcher.CheckAccess();
@@ -217,7 +249,12 @@ namespace NsqMon.Common.Mvvm
         /// <param name="buttons">The buttons.</param>
         /// <param name="image">The image.</param>
         /// <returns>The message box result.</returns>
-        protected MessageBoxResult MessageBox(string messageBoxText, string caption, MessageBoxButton buttons, MessageBoxImage image)
+        protected MessageBoxResult MessageBox(
+            string messageBoxText,
+            string caption,
+            MessageBoxButton buttons,
+            MessageBoxImage image
+        )
         {
             MessageBoxEvent messageBox = new MessageBoxEvent
             {

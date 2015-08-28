@@ -7,6 +7,7 @@ using NsqMon.Common.Wpf;
 using NsqMon.Controls;
 using NsqMon.Views;
 using Microsoft.Win32;
+using NsqMon.Views.Main;
 
 namespace NsqMon.Common.ApplicationServices
 {
