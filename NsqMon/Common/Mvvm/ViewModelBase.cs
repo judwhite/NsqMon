@@ -60,8 +60,8 @@ namespace NsqMon.Common.Mvvm
         /// <value>The error container.</value>
         public IErrorContainer ErrorContainer
         {
-            get { return Get<IErrorContainer>(nameof(ErrorContainer)); }
-            set { Set(nameof(ErrorContainer), value); }
+            get { return Get<IErrorContainer>("ErrorContainer"); }
+            set { Set("ErrorContainer", value); }
         }
 
         /// <summary>Shows the exception.</summary>

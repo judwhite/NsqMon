@@ -22,7 +22,9 @@ namespace NsqMon.Common.Mvvm
         /// <param name="propertyName">Name of the property.</param>
         protected virtual void RaisePropertyChanged(string propertyName)
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            var handler = PropertyChanged;
+            if (handler != null)
+                handler(this, new PropertyChangedEventArgs(propertyName));
         }
 
         protected void AddPropertyChangedHandler<T>(string propertyName, PropertyChangedEventHandler<T> handler)

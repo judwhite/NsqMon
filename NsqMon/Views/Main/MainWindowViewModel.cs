@@ -23,10 +23,10 @@ namespace NsqMon.Views.Main
         {
             INsqMonPlugin plugin = new NsqMonLocalhostPlugin();
 
-            AddPropertyChangedHandler<ObservableCollection<ICluster>>(nameof(Clusters), OnClustersChanged);
-            AddPropertyChangedHandler<ICluster>(nameof(SelectedCluster), OnSelectedClusterChanged);
-            AddPropertyChangedHandler<ObservableCollection<IEnvironment>>(nameof(Environments), OnEnvironmentsChanged);
-            AddPropertyChangedHandler<IEnvironment>(nameof(SelectedEnvironment), OnSelectedEnvironmentChanged);
+            AddPropertyChangedHandler<ObservableCollection<ICluster>>("Clusters", OnClustersChanged);
+            AddPropertyChangedHandler<ICluster>("SelectedCluster", OnSelectedClusterChanged);
+            AddPropertyChangedHandler<ObservableCollection<IEnvironment>>("Environments", OnEnvironmentsChanged);
+            AddPropertyChangedHandler<IEnvironment>("SelectedEnvironment", OnSelectedEnvironmentChanged);
 
             Clusters = new ObservableCollection<ICluster>(plugin.GetClusters());
         }
@@ -82,38 +82,38 @@ namespace NsqMon.Views.Main
 
         public ObservableCollection<ICluster> Clusters
         {
-            get { return Get<ObservableCollection<ICluster>>(nameof(Clusters)); }
-            set { Set(nameof(Clusters), value); }
+            get { return Get<ObservableCollection<ICluster>>("Clusters"); }
+            set { Set("Clusters", value); }
         }
 
         public ICluster SelectedCluster
         {
-            get { return Get<ICluster>(nameof(SelectedCluster)); }
-            set { Set(nameof(SelectedCluster), value); }
+            get { return Get<ICluster>("SelectedCluster"); }
+            set { Set("SelectedCluster", value); }
         }
 
         public ObservableCollection<IEnvironment> Environments
         {
-            get { return Get<ObservableCollection<IEnvironment>>(nameof(Environments)); }
-            set { Set(nameof(Environments), value); }
+            get { return Get<ObservableCollection<IEnvironment>>("Environments"); }
+            set { Set("Environments", value); }
         }
 
         public IEnvironment SelectedEnvironment
         {
-            get { return Get<IEnvironment>(nameof(SelectedEnvironment)); }
-            set { Set(nameof(SelectedEnvironment), value); }
+            get { return Get<IEnvironment>("SelectedEnvironment"); }
+            set { Set("SelectedEnvironment", value); }
         }
 
         public ObservableCollection<NsqLookupdModel> NsqLookupds
         {
-            get { return Get<ObservableCollection<NsqLookupdModel>>(nameof(NsqLookupds)); }
-            set { Set(nameof(NsqLookupds), value); }
+            get { return Get<ObservableCollection<NsqLookupdModel>>("NsqLookupds"); }
+            set { Set("NsqLookupds", value); }
         }
 
         public ObservableCollection<TopicModel> Topics
         {
-            get { return Get<ObservableCollection<TopicModel>>(nameof(Topics)); }
-            set { Set(nameof(Topics), value); }
+            get { return Get<ObservableCollection<TopicModel>>("Topics"); }
+            set { Set("Topics", value); }
         }
 
         private void PollNsqLookupds()
@@ -170,20 +170,20 @@ namespace NsqMon.Views.Main
         {
             public Uri Uri
             {
-                get { return Get<Uri>(nameof(Uri)); }
-                set { Set(nameof(Uri), value); }
+                get { return Get<Uri>("Uri"); }
+                set { Set("Uri", value); }
             }
 
             public bool? IsAlive
             {
-                get { return Get<bool?>(nameof(IsAlive)); }
-                set { Set(nameof(IsAlive), value); }
+                get { return Get<bool?>("IsAlive"); }
+                set { Set("IsAlive", value); }
             }
 
             public DateTime? LastPingResponse
             {
-                get { return Get<DateTime?>(nameof(LastPingResponse)); }
-                set { Set(nameof(LastPingResponse), value); }
+                get { return Get<DateTime?>("LastPingResponse"); }
+                set { Set("LastPingResponse", value); }
             }
         }
 
@@ -191,8 +191,8 @@ namespace NsqMon.Views.Main
         {
             public string Topic
             {
-                get { return Get<string>(nameof(Topic)); }
-                set { Set(nameof(Topic), value); }
+                get { return Get<string>("Topic"); }
+                set { Set("Topic", value); }
             }
         }
     }
