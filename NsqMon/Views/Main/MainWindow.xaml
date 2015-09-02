@@ -17,7 +17,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
@@ -77,12 +77,47 @@
         </Grid>
 
         <Grid Grid.Row="3" Margin="8,0,8,8">
-            <DataGrid ItemsSource="{Binding Topics, Mode=OneWay}" Style="{StaticResource DataGridStyle}">
+            <DataGrid ItemsSource="{Binding Topics, Mode=OneWay}" Style="{StaticResource DataGridStyle}" CanUserSortColumns="True">
                 <DataGrid.Columns>
-                    <DataGridTemplateColumn Header="Topic">
+                    <DataGridTemplateColumn Header="Topic" MinWidth="80" Width="*" SortMemberPath="Topic">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding Path=Topic, Mode=OneWay}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Header="Total Messages" MinWidth="100" Width="Auto" SortMemberPath="TotalMessages">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Path=TotalMessages, Mode=OneWay, StringFormat={}{0:#,0}, TargetNullValue='-'}" HorizontalAlignment="Stretch" TextAlignment="Right" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Header="Total Depth" MinWidth="100" Width="Auto" SortMemberPath="TotalDepth">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Path=TotalDepth, Mode=OneWay, StringFormat={}{0:#,0}, TargetNullValue='-'}" HorizontalAlignment="Stretch" TextAlignment="Right" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Header="Total Backend Depth" MinWidth="120" Width="Auto" SortMemberPath="TotalBackendDepth">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Path=TotalBackendDepth, Mode=OneWay, StringFormat={}{0:#,0}, TargetNullValue='-'}" HorizontalAlignment="Stretch" TextAlignment="Right" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Header="Channels Depth" MinWidth="100" Width="Auto" SortMemberPath="TotalChannelDepth">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Path=TotalChannelDepth, Mode=OneWay, StringFormat={}{0:#,0}, TargetNullValue='-'}" HorizontalAlignment="Stretch" TextAlignment="Right" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Header="Channels Backend Depth" MinWidth="150" Width="Auto" SortMemberPath="TotalChannelBackendDepth" SortDirection="Descending">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Path=TotalChannelBackendDepth, Mode=OneWay, StringFormat={}{0:#,0}, TargetNullValue='-'}" HorizontalAlignment="Stretch" TextAlignment="Right" />
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
